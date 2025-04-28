@@ -1,0 +1,17 @@
+[Unit]
+Description=ASCII Dashboard Screensaver
+After=multi-user.target
+ConditionPathExists=/opt/ascii-dashboard/dashboard.py
+Conflicts=getty@tty1.service
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/ascii-dashboard/dashboard.py
+Restart=on-failure
+StandardInput=tty
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+
+[Install]
+WantedBy=multi-user.target

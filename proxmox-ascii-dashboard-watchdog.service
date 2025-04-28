@@ -1,0 +1,12 @@
+[Unit]
+Description=ASCII Dashboard Watchdog
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/opt/ascii-dashboard/watchdog.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
