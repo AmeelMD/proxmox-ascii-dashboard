@@ -5,6 +5,7 @@ import time
 import psutil
 import socket
 import math
+import subprocess
 from datetime import datetime
 from blessed import Terminal
 
@@ -123,6 +124,12 @@ def draw_rounded_border(term, box_top, box_left, box_bottom, box_right):
     for y in range(box_top + 1, box_bottom):
         print(term.move_yx(y, box_left) + border_col + '│' + term.normal)
         print(term.move_yx(y, box_right) + border_col + '│' + term.normal)
+        
+def restart_login_prompt():
+    try:
+        subprocess.run(["systemctl", "restart", "getty@tty1.service"], check=True)
+    except Exception as e:
+        print(f"Failed to restart login prompt: {e}")
 
 # Main Display Loop
 
@@ -230,4 +237,7 @@ def main():
                 break
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        restart_login_prompt()
