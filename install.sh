@@ -28,8 +28,8 @@ fi
 chmod +x /opt/ascii-dashboard/watchdog.sh
 
 # Install required Python packages
-pip3 install --upgrade pip
-pip3 install -r /opt/ascii-dashboard/requirements.txt
+pip3 install --upgrade pip --break-system-packages
+pip3 install --break-system-packages -r /opt/ascii-dashboard/requirements.txt
 
 # Copy systemd service files
 cp /opt/ascii-dashboard/proxmox-ascii-dashboard.service /etc/systemd/system/
