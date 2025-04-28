@@ -7,11 +7,19 @@ echo "📦 Installing Proxmox ASCII Dashboard..."
 apt update
 apt install -y git python3 python3-pip
 
-# Clone project into /opt
+# Remove old non-git folder if exists
+if [ -d "/opt/ascii-dashboard" ]; then
+  if [ ! -d "/opt/ascii-dashboard/.git" ]; then
+    echo "⚠️ Existing /opt/ascii-dashboard found but it's not a git repo. Removing..."
+    rm -rf /opt/ascii-dashboard
+  fi
+fi
+
+# Clone fresh repo
 if [ ! -d "/opt/ascii-dashboard" ]; then
   git clone https://github.com/AmeelMD/proxmox-ascii-dashboard.git /opt/ascii-dashboard
 else
-  echo "⚡ /opt/ascii-dashboard already exists, pulling latest changes..."
+  echo "⚡ Valid git repo already exists, pulling latest changes..."
   cd /opt/ascii-dashboard
   git pull
 fi
