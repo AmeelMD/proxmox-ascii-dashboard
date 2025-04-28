@@ -9,14 +9,14 @@ systemctl stop proxmox-ascii-dashboard-watchdog.service || true
 systemctl disable proxmox-ascii-dashboard.service || true
 systemctl disable proxmox-ascii-dashboard-watchdog.service || true
 
-# Remove service files
+# Remove systemd service files
 rm -f /etc/systemd/system/proxmox-ascii-dashboard.service
 rm -f /etc/systemd/system/proxmox-ascii-dashboard-watchdog.service
 
-# Remove project files
+# Remove dashboard files
 rm -rf /opt/ascii-dashboard
 
 # Reload systemctl
 systemctl daemon-reload
 
-echo "✅ Uninstallation complete."
+echo "✅ Uninstallation complete. All dashboard files and services removed."

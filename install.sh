@@ -3,31 +3,29 @@ set -e
 
 echo "📦 Installing Proxmox ASCII Dashboard..."
 
-# Create install directory
-mkdir -p /opt/ascii-dashboard/assets
+# Make sure git, python3, pip3 are installed
+apt update
+apt install -y git python3 python3-pip
 
-# Copy files
-cp dashboard.py /opt/ascii-dashboard/
-cp -r assets/* /opt/ascii-dashboard/assets/
-cp requirements.txt /opt/ascii-dashboard/
-cp LICENSE /opt/ascii-dashboard/
-cp VERSION /opt/ascii-dashboard/
-cp watchdog.sh /opt/ascii-dashboard/     # << ADD THIS
+# Clone project into /opt
+if [ ! -d "/opt/ascii-dashboard" ]; then
+  git clone https://github.com/AmeelMD/proxmox-ascii-dashboard.git /opt/ascii-dashboard
+else
+  echo "⚡ /opt/ascii-dashboard already exists, pulling latest changes..."
+  cd /opt/ascii-dashboard
+  git pull
+fi
 
 # Make watchdog.sh executable
-chmod +x /opt/ascii-dashboard/watchdog.sh # << ADD THIS
-
-# Install dependencies
-apt update
-apt install -y python3 python3-pip git
+chmod +x /opt/ascii-dashboard/watchdog.sh
 
 # Install required Python packages
 pip3 install --upgrade pip
 pip3 install -r /opt/ascii-dashboard/requirements.txt
 
-# Copy service files
-cp proxmox-ascii-dashboard.service /etc/systemd/system/
-cp proxmox-ascii-dashboard-watchdog.service /etc/systemd/system/
+# Copy systemd service files
+cp /opt/ascii-dashboard/proxmox-ascii-dashboard.service /etc/systemd/system/
+cp /opt/ascii-dashboard/proxmox-ascii-dashboard-watchdog.service /etc/systemd/system/
 
 # Enable and start services
 systemctl daemon-reload
